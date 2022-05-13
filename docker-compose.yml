@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  web-catalogo:
+    build: .
+    environment:
+      JWT_KEY: chave-jwt
+      DB_CONNECTION: pgsql
+      DB_HOST: postgre-catalogo
+      DB_DATABASE: catalogo
+      DB_USERNAME: usuario_catalogo
+      DB_PASSWORD: senhapg
+      APP_KEY: c08cbbfd6eefc83ac6d23c4c791277e4
+      APP_URL: http://api-catalogo:8080
+      APP_ENV: local
+      APP_DEBUG: "true"
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: php -S web-catalogo:8080 -t public
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgre-catalogo
+
+  postgre-catalogo:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: senhapg
+      POSTGRES_USER: usuario_catalogo
+      POSTGRES_DB: catalogo
